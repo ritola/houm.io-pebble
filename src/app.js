@@ -16,6 +16,5 @@ var main = new UI.Card({
 main.show();
 
 Pebble.addEventListener('showConfiguration', function(e) {
-  // Show config page
-  Pebble.openURL('http://ritola.net/');
+  Pebble.openURL('https://rawgit.com/ritola/houm.io-pebble/master/configuration.html');
 });
