@@ -18,3 +18,11 @@ main.show();
 Pebble.addEventListener('showConfiguration', function(e) {
   Pebble.openURL('https://rawgit.com/ritola/houm.io-pebble/master/configuration.html');
 });
+
+Pebble.addEventListener('webviewclosed',
+  function(e) {
+    var configuration = JSON.parse(decodeURIComponent(e.response));
+    localStorage.setItem('configuration', configuration);
+    console.log('Configuration window returned: ', JSON.stringify(configuration));
+  }
+);
