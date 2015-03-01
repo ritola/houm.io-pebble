@@ -1,8 +1,23 @@
 <html>
+<head>
+<title>houm.io-pebble configuration</title>
+<style>
+  * { font-family: sans-serif }
+  #siteKey { width: 100% }
+</style>
+</head>
 <body>
-  Configuration will be here. Now closing.
+  <label for="siteKey">houm.io site key:</label><br>
+  <input type="text" id="siteKey" autofocus>
+  <input type="button" id="button" value="Ok">
   <script>
-    location.href = 'pebblejs://close#success';
+    var siteKey = document.getElementById('siteKey')
+    var button = document.getElementById('button')
+    button.onclick = function(e) {
+      var configuration = { 'siteKey': siteKey.value }
+      alert(JSON.stringify(configuration))
+      location.href = 'pebblejs://close#' + encodeURIComponent(JSON.stringify(configuration))
+    }
   </script>
 </body>
 </html>
