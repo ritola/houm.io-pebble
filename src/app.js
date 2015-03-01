@@ -1,17 +1,15 @@
-/**
- * Welcome to Pebble.js!
- *
- * This is where you write your app.
- */
-
 var UI = require('ui');
+var configuration = localStorage.getItem('configuration');
 
 var main = new UI.Card({
-  title: 'Pebble.js',
-  icon: 'images/menu_icon.png',
-  subtitle: 'Hello World!',
-  body: 'Press any button.'
+  title: 'houm.io'
 });
+
+if (!configuration || !configuration.siteKey) {
+  main.body('Not configured');
+} else {
+  main.body(JSON.stringify(configuration));
+}
 
 main.show();
 
@@ -21,7 +19,7 @@ Pebble.addEventListener('showConfiguration', function(e) {
 
 Pebble.addEventListener('webviewclosed',
   function(e) {
-    var configuration = JSON.parse(decodeURIComponent(e.response));
+    configuration = JSON.parse(decodeURIComponent(e.response));
     localStorage.setItem('configuration', configuration);
     console.log('Configuration window returned: ', JSON.stringify(configuration));
   }
