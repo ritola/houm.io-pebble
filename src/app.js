@@ -1,26 +1,29 @@
 var UI = require('ui');
-var configuration = localStorage.getItem('configuration');
+var settings = require('settings');
+var siteKey = settings.option('siteKey');
 
 var main = new UI.Card({
   title: 'houm.io'
 });
 
-if (!configuration || !configuration.siteKey) {
+if (!siteKey) {
   main.body('Not configured');
 } else {
-  main.body(JSON.stringify(configuration));
+  main.body(siteKey);
 }
 
 main.show();
 
-Pebble.addEventListener('showConfiguration', function(e) {
-  Pebble.openURL('https://rawgit.com/ritola/houm.io-pebble/master/configuration.html');
-});
-
-Pebble.addEventListener('webviewclosed',
+settings.config(
+  { url: 'https://rawgit.com/ritola/houm.io-pebble/master/configuration.html' },
   function(e) {
-    configuration = JSON.parse(decodeURIComponent(e.response));
-    localStorage.setItem('configuration', configuration);
-    console.log('Configuration window returned: ', JSON.stringify(configuration));
-  }
+    console.log('closed configurable');
+    console.log(JSON.stringify(e.options));
+    if (e.failed) {
+      console.log(e.response);
+    }
+  },
+  function(e) {
+    console.log('closed configurable');
+  }  
 );
