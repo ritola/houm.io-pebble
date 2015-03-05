@@ -23,9 +23,19 @@ if (!siteKey) {
         sections: [scenesToSection(scenes)]
       });
       sceneMenu.show();
+      sceneMenu.on('select', function(e) {
+        var id = scenes[e.itemIndex]._id; // TODO: Check the array size
+        console.log('Selected item #' + e.itemIndex + ' of section #' + e.sectionIndex);
+        console.log('The item is titled "' + e.item.title + '"');
+        console.log('And it most probably has an id "' + id + '"');
+        selectScene(id);
+      });
     },
     function(error, status, request) {
-      console.log('Getting site failed: ' + error);
+      new UI.Card({
+        title: 'houm.io',
+        body: 'Getting site failed: ' + error
+      }).show();
     }
   );
 }
@@ -35,9 +45,17 @@ function sceneSort(a, b) {
 }
 
 function scenesToSection(scenes) {
-  return {title: "Select scene", items: scenes.map(function (x) {
-    return {title: x.name};
+  return { title: "Select scene", items: scenes.map(function (x) {
+    return { title: x.name };
   })};
+}
+
+function selectScene(id) {
+  ajax({
+    url: 'https://houmi.herokuapp.com/api/site/' + siteKey + '/scene/' + id + '/apply', 
+    method: 'put', 
+    type: 'json'
+  });  
 }
 
 settings.config(
