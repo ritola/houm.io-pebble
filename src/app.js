@@ -1,18 +1,44 @@
 var UI = require('ui');
+var ajax = require('ajax');
 var settings = require('settings');
 var siteKey = settings.option('siteKey');
 
-var main = new UI.Card({
-  title: 'houm.io'
-});
+new UI.Card({
+  title: 'houm.io',
+  body: 'Loading...'
+}).show();
 
 if (!siteKey) {
-  main.body('Not configured');
+  new UI.Card({
+    title: 'houm.io',
+    body: 'Not configured'
+  }).show();
 } else {
-  main.body(siteKey);
+  console.log('Configured as ' + siteKey);
+  ajax(
+    { url: 'https://houmi.herokuapp.com/api/site/' + siteKey, type: 'json'},
+    function(data, status, request) {
+      var scenes = data.scenes.sort(sceneSort);
+      var sceneMenu = new UI.Menu({
+        sections: [scenesToSection(scenes)]
+      });
+      sceneMenu.show();
+    },
+    function(error, status, request) {
+      console.log('Getting site failed: ' + error);
+    }
+  );
 }
 
-main.show();
+function sceneSort(a, b) {
+  return a.name.localeCompare(b.name);
+}
+
+function scenesToSection(scenes) {
+  return {title: "Select scene", items: scenes.map(function (x) {
+    return {title: x.name};
+  })};
+}
 
 settings.config(
   { url: 'https://rawgit.com/ritola/houm.io-pebble/master/configuration.html' },
