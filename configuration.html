@@ -15,7 +15,6 @@
     var button = document.getElementById('button')
     button.onclick = function(e) {
       var configuration = { 'siteKey': siteKey.value }
-      alert(JSON.stringify(configuration))
       location.href = 'pebblejs://close#' + encodeURIComponent(JSON.stringify(configuration))
     }
   </script>
