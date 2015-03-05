@@ -17,13 +17,13 @@ main.show();
 settings.config(
   { url: 'https://rawgit.com/ritola/houm.io-pebble/master/configuration.html' },
   function(e) {
+    console.log('open configurable');
+  },
+  function(e) {
     console.log('closed configurable');
     console.log(JSON.stringify(e.options));
     if (e.failed) {
       console.log(e.response);
     }
-  },
-  function(e) {
-    console.log('closed configurable');
   }  
 );
